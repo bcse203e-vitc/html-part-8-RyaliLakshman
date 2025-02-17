@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-Up Form Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        input {
+            display: block;
+            margin: 10px auto;
+            padding: 8px;
+            width: 80%;
+            border: 2px solid gray;
+            border-radius: 5px;
+        }
+        .valid {
+            border-color: green;
+        }
+        .invalid {
+            border-color: red;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Sign-Up Form</h2>
+    <form>
+        <input type="text" id="name" placeholder="Enter Name">
+        <p id="nameError" class="error"></p>
+        
+        <input type="email" id="email" placeholder="Enter Email">
+        <p id="emailError" class="error"></p>
+        
+        <input type="password" id="password" placeholder="Enter Password">
+        <p id="passwordError" class="error"></p>
+    </form>
+
+    <script>
+        document.getElementById("name").addEventListener("input", function() {
+            let name = this.value;
+            let error = document.getElementById("nameError");
+            if (name.trim() === "") {
+                error.textContent = "Name must not be empty";
+                this.classList.add("invalid");
+                this.classList.remove("valid");
+            } else {
+                error.textContent = "";
+                this.classList.add("valid");
+                this.classList.remove("invalid");
+            }
+        });
+
+        document.getElementById("email").addEventListener("input", function() {
+            let email = this.value;
+            let error = document.getElementById("emailError");
+            let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!regex.test(email)) {
+                error.textContent = "Email must be a valid format";
+                this.classList.add("invalid");
+                this.classList.remove("valid");
+            } else {
+                error.textContent = "";
+                this.classList.add("valid");
+                this.classList.remove("invalid");
+            }
+        });
+
+        document.getElementById("password").addEventListener("input", function() {
+            let password = this.value;
+            let error = document.getElementById("passwordError");
+            let regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+            if (!regex.test(password)) {
+                error.textContent = "Password must be at least 8 characters with 1 uppercase & 1 number";
+                this.classList.add("invalid");
+                this.classList.remove("valid");
+            } else {
+                error.textContent = "";
+                this.classList.add("valid");
+                this.classList.remove("invalid");
+            }
+        });
+    </script>
+</body>
+</html>

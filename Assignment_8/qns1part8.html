@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Table Creator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        button {
+            margin: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Dynamic Table Creator</h2>
+
+    <label for="rows">Rows:</label>
+    <input type="number" id="rows" min="1" value="3">
+
+    <label for="columns">Columns:</label>
+    <input type="number" id="columns" min="1" value="3">
+
+    <button onclick="generateTable()">Generate Table</button>
+
+    <div id="tableContainer"></div>
+
+    <script>
+        function generateTable() {
+            const rows = document.getElementById("rows").value;
+            const cols = document.getElementById("columns").value;
+            const tableContainer = document.getElementById("tableContainer");
+            
+            // Clear previous table
+            tableContainer.innerHTML = "";
+
+            // Create table
+            let table = document.createElement("table");
+            let thead = document.createElement("thead");
+            let headerRow = document.createElement("tr");
+
+            // Add column delete buttons
+            for (let c = 0; c < cols; c++) {
+                let th = document.createElement("th");
+                th.innerHTML = `Col ${c + 1} <button onclick="deleteColumn(${c})">X</button>`;
+                headerRow.appendChild(th);
+            }
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Add rows with delete buttons
+            for (let r = 0; r < rows; r++) {
+                let tr = document.createElement("tr");
+                for (let c = 0; c < cols; c++) {
+                    let td = document.createElement("td");
+                    td.textContent = `(${r + 1}, ${c + 1})`;
+                    tr.appendChild(td);
+                }
+                let deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete Row";
+                deleteButton.onclick = function() {
+                    tr.remove();
+                };
+                let td = document.createElement("td");
+                td.appendChild(deleteButton);
+                tr.appendChild(td);
+
+                table.appendChild(tr);
+            }
+
+            tableContainer.appendChild(table);
+        }
+
+        function deleteColumn(colIndex) {
+            let table = document.querySelector("table");
+            if (!table) return;
+            let rows = table.rows;
+            for (let r = 0; r < rows.length; r++) {
+                if (rows[r].cells.length > colIndex) {
+                    rows[r].deleteCell(colIndex);
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Carousel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .carousel-container {
+            position: relative;
+            width: 400px;
+            margin: auto;
+            overflow: hidden;
+            border: 2px solid black;
+            border-radius: 10px;
+        }
+        .carousel-images {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-images img {
+            width: 400px;
+            height: 250px;
+        }
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .prev {
+            left: 10px;
+        }
+        .next {
+            right: 10px;
+        }
+        .carousel-container:hover .carousel-button {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Image Carousel</h2>
+
+    <div class="carousel-container" onmouseover="pauseCarousel()" onmouseout="resumeCarousel()">
+        <div class="carousel-images">
+            <img src="https://via.placeholder.com/400x250/FF5733/FFFFFF?text=Image+1" alt="Image 1">
+            <img src="https://via.placeholder.com/400x250/33FF57/FFFFFF?text=Image+2" alt="Image 2">
+            <img src="https://via.placeholder.com/400x250/3357FF/FFFFFF?text=Image+3" alt="Image 3">
+            <img src="https://via.placeholder.com/400x250/FF33A8/FFFFFF?text=Image+4" alt="Image 4">
+        </div>
+        <button class="carousel-button prev" onclick="prevSlide()">&#10094;</button>
+        <button class="carousel-button next" onclick="nextSlide()">&#10095;</button>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const images = document.querySelector('.carousel-images');
+        const totalImages = document.querySelectorAll('.carousel-images img').length;
+        let autoSlide = setInterval(nextSlide, 3000);
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalImages;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            const offset = -currentIndex * 400; // 400px is image width
+            images.style.transform = `translateX(${offset}px)`;
+        }
+
+        function pauseCarousel() {
+            clearInterval(autoSlide);
+        }
+
+        function resumeCarousel() {
+            autoSlide = setInterval(nextSlide, 3000);
+        }
+    </script>
+
+</body>
+</html>

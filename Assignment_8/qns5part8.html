@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        textarea {
+            width: 80%;
+            height: 150px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #333;
+            border-radius: 5px;
+        }
+        .word-count {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Live Word Counter</h2>
+    <textarea id="textInput" placeholder="Type something here..." oninput="updateWordCount()"></textarea>
+    <div class="word-count">Word Count: <span id="wordCount">0</span></div>
+    <p><b>Repeated words are highlighted in yellow.</b></p>
+
+    <script>
+        function updateWordCount() {
+            let textArea = document.getElementById("textInput");
+            let wordCountDisplay = document.getElementById("wordCount");
+            let text = textArea.value.trim();
+
+            // Split words and filter out empty strings
+            let words = text.match(/\b\w+\b/g) || [];
+            wordCountDisplay.textContent = words.length;
+
+            // Highlight repeated words
+            let wordMap = {};
+            words.forEach(word => {
+                word = word.toLowerCase();
+                wordMap[word] = (wordMap[word] || 0) + 1;
+            });
+
+            let highlightedText = text.replace(/\b\w+\b/g, word => {
+                return wordMap[word.toLowerCase()] > 1 ? `<span class="highlight">${word}</span>` : word;
+            });
+
+            textArea.innerHTML = highlightedText;
+        }
+    </script>
+
+</body>
+</html>
